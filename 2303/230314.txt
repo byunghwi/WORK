@@ -1,0 +1,19 @@
+//이미지 로드 전 스피너
+imageMapSource.on('imageloadstart', () => this.setSpinnerLoading('imageloadsstart'));
+imageMapSource.on('imageloadend', () => this.setSpinnerLoading(false));
+
+
+
+TO_DO :
+촬영 > 촬영사진 > 710.Altum 5cm(9042) 선택 후 > 우측 상단 위성지도 클릭 > 불규칙적 포인트 생성된 곳 찾기
+
+
+1. 현재 'CRP 사진' 인지 '일반사진' 인지 구분값 없음. 포인트 색을 구분지어 표시할 것.
+
+2. 1세트(CPR사진 5장이 1세트) 라도 존재하는 것만 '반사값설정' 버튼 보이도록 수정해야 함. 
+	-> mapStore.js > popupHtml.push 확인할 것.
+
+3. [촬용] 촬영경로설정 값 저장 시 고도값이 숫자형인데 문자열로 저장하는 이슈 수정
+	재현경로
+	촬영경로설정>매핑모드(자동) > 지도위에 경로 지정 후 우측 비행 설정 값들 확인 필요
+	저장시 숫자형은 숫자형으로 전달해야함

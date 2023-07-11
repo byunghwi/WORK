@@ -1,0 +1,22 @@
+
+
+[fileUpload.vue]
+1. 사용자가 startUpload 버튼 누를 시 startUpload 함수 진입
+2. startUpload 함수 내, 아래 구문 처리 시 스크립트 과부하로 인한 브라우저 동작 멈춤현상 발생
+ this.remain_files.push(info.file); 
+ this.$refs.upload.remove(info);
+
+<처리방안>
+3. 스크립트 과부하를 발생시키는 구문을 따로 함수로 정의한 뒤, setTimeout으로 적절한 처리단위와 일정시간 분할 수행 지정하여 UI작업 처리 가능하도록 수정.
+
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+<DJI webview 개발>
+
+1. DJI DEVELOPER 사이트에서 API 관련 문서 및 introduction 한번 쭉 읽어보기 (Document 쪽)
+2. (우선) Quick Start > Front-End 코드 받은 뒤 build 및 실행까지 해볼 것..
+3. [Focus] JsBridge 통신 오가는 부분 부터 확인...
