@@ -1,0 +1,39 @@
+<24.01.19>
+이슈사항
+1. 브라우저 접속 시 드론의 기준고도 이슈사항
+ 드론 2대가 비행 중일때
+ex) 1번, 2번드론 고도 100미터로 이동 중인 상태에서(둘이 동일한 위치에서 takeoff 시)
+1번드론 직하방 지형이 50미터 솟아있을 때 브라우저를 접속하면 1번드론은 접속시의 기준고도를 새로 계산하므로, 
+1번드론은 150M상공, 2번 드론은 100M상공 비행으로 상이하게 이동하는 이슈
+
+-> 덕소 가서 수동 실비행 해볼것. (로그확인) 
+ 현재 시작점 고도보다 낮은 곳으로  하강했을 때 고도값이 마이너스로 오는지...
+
+
+<01.24>
+1. 정밀지도 리스트에서  terrain 파일 및 타일정보 생성돼있는지 여부 표시돼야함.
+2. 인터넷 모드일때는 기능에 제한이 없도록(정밀지도 표출도 다 돼야함) -> 세슘에서 지원하는 터레인에 우리 지도를 깔 것.
+
+
+<01.26>
+1. 정밀지도 리스트에서 tile 생성 안된 항목은 생성하는 버튼 만들기.
+- storage_upload 테이블에 column 추가.
+- 생성 클릭시 terrain_tiler api 호출하여 tile 생성.
+- 생성 후 목록 갱신하기.
+
+작업내역
+- dbmanager query.xml 수정 
+정밀지도 list 중, sub_options(jsonb타입) 컬럼의 name:dsm value:true 인 행들만 가져오기.
+아래 sql 사용하여 수정함
+-> jsonb_typeof(mt.sub_options) = 'array' 
+-> EXISTS (
+            SELECT 1
+            FROM jsonb_array_elements(sub_options) AS value
+            WHERE (value->>'name')::text = 'dsm' AND (value->>'value')::boolean = true
+          )
+
+<지도생성 프로세스>
+촬영사진 -> 포인트 선택 -> 지도생성 -> 컨펌모달 확인 
+CreateMap.vue -> createMap() -> beginCreateMapStep1 -> openGlobalModal 에서 컨펌 시 watch의 getConfirmType 감지 후
+startTask() 실행 -> await projectAPI.startTask(param); -> servicemanager 호출
+servicemanager에서 nodeOdm api호출( 옵션을 줘서 21번의 디렉토리처럼 폴더와 파일 생성되게 함)
