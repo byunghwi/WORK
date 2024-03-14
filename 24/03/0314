@@ -1,0 +1,33 @@
+
+
+1.  CesiumContainer.vue 소스 리팩토링 진행
+- setInterval, 과도한 array find 사용, 불필요 변수 등 개선
+
+2. Drone entity를 제외, wall polyline 을 datasource로 통일 
+- 각 드론 별 wall, polyline용 dataSource, 3d구체용 dataSource로 분리
+
+3. miniMap.vue 과부하 개선
+- 원인 : 마우스 이벤트핸들러를 웹소켓으로 데이터 수신시마다 설정해주고 있었음. 
+- 처리 : 최초 드론 entity 생성 될 때만 마우스 이벤트핸들러 등록하도록 수정
+
+4. 드론, 3d구체 마우스오버 시 라벨표시 추가
+
+5. 인터넷모드일 때 하이브리드 지도를 최상단에 표출하도록 수정
+
+6. 인터넷모드 일 때도 정밀지도 선택할 수 있도록 + 해당 정밀지도 2d이미지로 표출( 지형정보는 cesiun world terrain으로 (추후에 로컬지형으로 보여줄 지 고민해봐야 함))
+
+7. 인터넷, 인트라넷 모드 선택 시마다 기존에 선택된 정밀지도 초기화 (초기화 안해주면 계속 정밀지도를 불러와야하므로 과부하의 원인이 됨)
+
+8. 드론이 연결된 상태에서 인터넷 -> 인트라넷 모드 변경시 드론 사라지는 현상 수정
+ - setisTerrain이 true로 설정된 경우만 웹소켓 데이터를 수신하도록 되어있었음. -> false 상태라 웹소켓 데이터 미수신 상태로 droneTimeCheck 10초 이후 remove 되는 부분이었음
+
+9. 개발자도구 확인시 경고 뜨는 부분들 수정
+- <Suspense> 태그 삭제 (아직 완성된 기능이 아니므로 개발자도구에 경고창 뜸)
+- setup 함수에 async를 걸 경우, (참고: https://lts0606.tistory.com/687 )
+- __VUE_PROD_HYDRATION_MISMATCH_DETAILS__  관련 경고 -> vue.config.js 파일
+ 추가 -> 
+new webpack.DefinePlugin({
+        // Vue CLI is in maintenance mode, and probably won't merge my PR to fix this in their tooling
+        // https://github.com/vuejs/vue-cli/pull/7443
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+      })
