@@ -1,17 +1,10 @@
 
-
-
-
-
-
-
 1. liveStream 수정
   * 라디오버튼 stop 해줘도 스트림 안꺼지는 부분 수정
   * stop 후 다시 start 할 때 라이브에러 
 처리> 라디오버튼 off시 무조건 라디오버튼 비활성화 처리 후 백엔드에서 오는 코드에 따라 비활성화해제 처리.
   1. 여러명이 보고 있을 때 한 명이 stop 할 경우: func_util.js 에서 WS_CONFIG.gatewayList.get(ele.device).set('liveStreamStatus', 'watching'); 값으로 보내주게 함. 
-  2. 마지막 한 명이 보고 있을 때 stop할 경우(stream stop해야함): 기존과 동일하게 live_stop_push 타도록
-
+  2. 마지막 한 명이 보고 있을 때 stop할 경우(stream stop해야함): 기존과 동일하게 live_stop_push 타도록 수정
 
 
 2. 고도테스트
@@ -25,3 +18,8 @@ elevation: 10m
 10m(elevation) - (10(현재기준고도) - 5(최초기준고도)) = 5m(실제 렌더링해야하는 높이)
 
 * result: 10m(현재기준고도) + 5m(실제 렌더링해야하는 높이) = 15m
+
+
+3. 정밀지도 선택시 터레인이 나오는 게 있고 안나오는 게 있다.
+ setStorageId 를 할 때 watch 부분에서 terrainLocal 세팅 -> 인터넷 인트라넷 모드 변경시엔 이미 watch에서 동작해 생성했던 terrainLocal로 지형을 세팅했기 때문에 
+이미 정밀지도를 선택하고 인터넷->인트라넷 변경시 이전의 지형이 표출되고 있는 것으로 예상
