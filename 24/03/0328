@@ -1,0 +1,27 @@
+
+
+
+
+
+
+
+1. liveStream 수정
+  * 라디오버튼 stop 해줘도 스트림 안꺼지는 부분 수정
+  * stop 후 다시 start 할 때 라이브에러 
+처리> 라디오버튼 off시 무조건 라디오버튼 비활성화 처리 후 백엔드에서 오는 코드에 따라 비활성화해제 처리.
+  1. 여러명이 보고 있을 때 한 명이 stop 할 경우: func_util.js 에서 WS_CONFIG.gatewayList.get(ele.device).set('liveStreamStatus', 'watching'); 값으로 보내주게 함. 
+  2. 마지막 한 명이 보고 있을 때 stop할 경우(stream stop해야함): 기존과 동일하게 live_stop_push 타도록
+
+
+
+2. 고도테스트
+이슈> 브라우저 접속시점은 최초 이륙지점의 지형고도를 알 수 없어, 현재 드론위치의 지형의 고도에 elevation 값을 더하게 됨
+처리방안> 최초 이륙지점의 기준 지형고도와 현재 드론위치(위/경도)의 기준 지형고도의 차를 구해 elevation값에서 빼 준 뒤. elevation 값을 더한다.
+
+ex) 
+elevation: 10m
+최초기준고도: 5m                 현재기준고도: 10m
+
+10m(elevation) - (10(현재기준고도) - 5(최초기준고도)) = 5m(실제 렌더링해야하는 높이)
+
+* result: 10m(현재기준고도) + 5m(실제 렌더링해야하는 높이) = 15m
