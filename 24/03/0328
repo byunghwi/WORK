@@ -6,10 +6,11 @@
   1. 여러명이 보고 있을 때 한 명이 stop 할 경우: func_util.js 에서 WS_CONFIG.gatewayList.get(ele.device).set('liveStreamStatus', 'watching'); 값으로 보내주게 함. 
   2. 마지막 한 명이 보고 있을 때 stop할 경우(stream stop해야함): 기존과 동일하게 live_stop_push 타도록 수정
 
-
 2. 고도테스트
-이슈> 브라우저 접속시점은 최초 이륙지점의 지형고도를 알 수 없어, 현재 드론위치의 지형의 고도에 elevation 값을 더하게 됨
-처리방안> 최초 이륙지점의 기준 지형고도와 현재 드론위치(위/경도)의 기준 지형고도의 차를 구해 elevation값에서 빼 준 뒤. elevation 값을 더한다.
+  DJI드론에서 발행하는 home_longitude, home_latitude(홈포인트의 위/경도)를 받아, 홈포인트의 지형고도 계산
+  계산된 홈포인트의 지형고도에서 + 현재의 웹소켓으로 받은 elevation값 = 현재 그려져야하는 드론의 고도.
+
+- 인터넷, 인트라넷모드 변경할 때마다, terrainProvider 값이 바뀌어야 한다.
 
 ex) 
 elevation: 10m
@@ -23,3 +24,9 @@ elevation: 10m
 3. 정밀지도 선택시 터레인이 나오는 게 있고 안나오는 게 있다.
  setStorageId 를 할 때 watch 부분에서 terrainLocal 세팅 -> 인터넷 인트라넷 모드 변경시엔 이미 watch에서 동작해 생성했던 terrainLocal로 지형을 세팅했기 때문에 
 이미 정밀지도를 선택하고 인터넷->인트라넷 변경시 이전의 지형이 표출되고 있는 것으로 예상
+
+4. 인터넷/인트라넷 모드, 정밀지도선택 변경 시 드론이동경로 튀는 현상
+-> terrainProvider를 변경하고 최초기준점을 재계산하여 렌더링하는 시점보다 웹소켓으로 데이터를 받는 작업이 먼저 이루어져 변경 전의 최초기준점으로부터의 고도를 표출하여 발생한 문제.
+처리) 최초기준점고도가 변경될 경우 그려지던 경로, 벽( datasource) 를 removeAll 처리.
+
+
