@@ -29,4 +29,14 @@ elevation: 10m
 -> terrainProvider를 변경하고 최초기준점을 재계산하여 렌더링하는 시점보다 웹소켓으로 데이터를 받는 작업이 먼저 이루어져 변경 전의 최초기준점으로부터의 고도를 표출하여 발생한 문제.
 처리) 최초기준점고도가 변경될 경우 그려지던 경로, 벽( datasource) 를 removeAll 처리.
 
+-> 변경 : 팀장님 회의 시 기존경로 그대로 두고, 변경된 최초기준점을 기준으로 elevation 처리하여 렌더링해서 보여줄 것.
+   처리방안 : state.drawPath 할때마다 
+           positions: [
+            olddata.longitude, olddata.latitude, olddata.height, // elevation값
+            newdata.longitude, newdata.latitude, newdata.height  // elevation값
+          ],
+          reRendering: reRendering 
+
+    getDrawPath watch 부분에서 reRendering 값이 true 일 경우, 기존에 그렸던 polyline, wall 를 재계산된 높이로 렌더링
+
 
