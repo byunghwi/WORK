@@ -1,0 +1,12 @@
+1. 인터넷, 인트라넷, 브이월드 모드 변경시 script 에러 수정
+-> 
+- 각 컴포넌트 onUnmounted 내부에서 객체초기화, liveStore.js의 resetAllCesium에서 렌더링 관련 state 객체들 초기화 해주는데..
+웹소켓으로는 계속 데이터를 받아 처리하는 부분이 있어 에러 발생.
+- MiniMap.vue에서는 객체를 초기화 하고 새로그리는 부분이 없었음. 따라서 이미 removeAllCesium 함수에서 state.droneObjs, state.gcsObjs 가
+초기화 되었으나, MiniMap.vue에서 계속 state.droneObjs, state.gcsObjs 객체를 참조하고 있어 에러발생
+
+처리: 
+1. state에 modeChanged 변수추가. 모드 변경시 modeChanged를 false, 모드변경 완료 후 true. 웹소켓으로 처리하는 부분은 modeChanged가 true로 됐을때만
+2. MiniMap.vue에서 modeChanged를 watch로 감시 및 false로 변경됐을 시 await mini_viewer.entities.removeAll(); 로 렌더링 entitiy들 삭제
+
+- 
