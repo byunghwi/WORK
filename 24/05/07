@@ -1,0 +1,24 @@
+1. 드론 2대 띄운 상태에서 인트라넷모드 변경 시 지도 표출 안됨(느림)
+* 원인 -> 확인결과 웹소켓으로 받을 때 마다 updatedPositions 계산하는 과정(기준고도)을 하므로 네트워크요청 과부하.
+* 처리 -> 
+  각 드론마다 객체에 state.droneObjs[user_id]?.terrainProvider 로 현재 state.terrainProvider 저장.
+  웹소켓으로 데이터 받을 때마다 state.terrainProvider != state.droneObjs[user_id]?.terrainProvider 로 비교 후 
+  현재의 terrainProvider와 각 드론 객체의 terrainProvider(state.droneObjs[user_id]?.terrainProvider) 가 다를 경우
+  updatePositions 계산하도록 수정
+
+2. 인터넷, 인트라넷 모드에서 선택한 정밀지도가 브이월드 모드에서는 표출안됨
+* 처리 -> getSelectedOdm.value 가 있을 경우 flyODM() 으로 화면이동 및 이미지레이어추가 + 표출
+
+3. 모드 변경 후 선택된 드론의 경로 표출 안됨
+  * 원인 -> 모드 변경시 각 entities 및 datasource들 remove 처리됨. getDrawPath watch 동작시 
+    if(val?.user_id && val?.path && dataSource[val.user_id]?.entities) 일 때만 경로 생성해주도록 되어있었음.
+  * 처리 -> dataSource 없을 경우 생성해주고 이후 처리 진행하도록 수정
+  if(val?.user_id && val?.path){
+  //모드 변경으로 인한 dataSources 없을 시 추가
+  if (!dataSource[val.user_id]) {
+    dataSource[val.user_id] = new CustomDataSource(val.user_id);
+    viewer.dataSources.add(dataSource[val?.user_id]);
+  }
+
+
+
