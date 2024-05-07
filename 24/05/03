@@ -7,6 +7,6 @@
 
 처리: 
 1. state에 modeChanged 변수추가. 모드 변경시 modeChanged를 false, 모드변경 완료 후 true. 웹소켓으로 처리하는 부분은 modeChanged가 true로 됐을때만
-2. MiniMap.vue에서 modeChanged를 watch로 감시 및 false로 변경됐을 시 await mini_viewer.entities.removeAll(); 로 렌더링 entitiy들 삭제
+2. MiniMap.vue에서 modeChanged를 watch로 감시 및 false로 변경됐을 시 await mini_viewer.entities.removeAll(); 로 렌더링 entitiy들 삭제.
 
-- 
+
