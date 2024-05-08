@@ -1,0 +1,10 @@
+1. 3D 구체 토글 시 멈춤현상
+원인 -> 토글 ON 할 때마다 new CustomDatasource 로 dataSource 생성 및 viewer.dataSources.add로 추가
+처리 -> 토글 ON 할 때,  
+dsNetworkAreaCircle[user_id] 가 생성되지 않았을 때만 dataSource 생성 및 viewer.dataSources에 등록
+  if(!dsNetworkAreaCircle[user_id]) { // viewer에 dataSource 추가 안됐을 경우만 추가
+    dsNetworkAreaCircle[user_id] = new CustomDataSource(user_id + '_networkArea');
+    viewer.dataSources.add(dsNetworkAreaCircle[user_id]);
+  }
+
+2. simulator.html CDN 스크립트 교체, 시뮬레이션 위치 구리 왕숙천으로 변경
