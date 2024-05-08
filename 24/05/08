@@ -8,3 +8,6 @@ dsNetworkAreaCircle[user_id] 가 생성되지 않았을 때만 dataSource 생성
   }
 
 2. simulator.html CDN 스크립트 교체, 시뮬레이션 위치 구리 왕숙천으로 변경
+
+3. vworld모드 즐겨찾기 위치 이동 추가
+
