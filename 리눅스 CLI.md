@@ -1,4 +1,4 @@
-1. cat
+#1. cat
 - cat 명령은 파일(들)을 순서대로 읽고 그 내용을 읽은 순서대로 표준 출력(standard output)에 쓰는 명령
    cat [OPTION]... [FILE]...
       OPTION
