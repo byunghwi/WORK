@@ -1,0 +1,17 @@
+1. simple_simulator에서 드론 연결 끊었다가 다시 재연결시 경로 생성 안됨 ( 인터넷/인트라넷, 브이월드 동일증상) 
+ simulator.html 에서도 동일증상
+*원인 -> getDrawPath watch 부분에서 dataSource[val.user_id]가 없을 때만 viewer.dataSources에 등록하게 되어있었음.
+  if (!dataSource[val.user_id]) {
+    dataSource[val.user_id] = new CustomDataSource(val.user_id);
+    viewer.dataSources.add(dataSource[val?.user_id]);
+  }
+
+*처리 ->  dataSource[val.user_id]가 없을 때가 아닌 viewer.dataSources에 해당 dataSource가 포함 안돼있을 때 등록하도록 수정
+  if (!viewer.dataSources.contains(dataSource[val.user_id])) {
+    dataSource[val.user_id] = new CustomDataSource(val.user_id);
+    viewer.dataSources.add(dataSource[val.user_id]);
+  }
+
+2. 로그인 페이지에서 main_menu.vue(좌측상단 메인메뉴), droneStatus.vue(미니맵,실시간데이터) 화면 보임
+*처리 -> App.vue에서 store의 getIsLogin이 true일 때만 main_menu 보이게,
+ 라우터가드에서 로그인페이지 이동시 setIsLogin false로 만들어 줌.
