@@ -1,6 +1,7 @@
 1. simple_simulator에서 드론 연결 끊었다가 다시 재연결시 경로 생성 안됨 ( 인터넷/인트라넷, 브이월드 동일증상) 
  simulator.html 에서도 동일증상
 *원인 -> getDrawPath watch 부분에서 dataSource[val.user_id]가 없을 때만 viewer.dataSources에 등록하게 되어있었음.
+removeEntities 함수 동작시 dataSource[user_id].entities.removeAll(); 는 해주나, dataSource[user_id] 자체를 초기화 하진않음.
   if (!dataSource[val.user_id]) {
     dataSource[val.user_id] = new CustomDataSource(val.user_id);
     viewer.dataSources.add(dataSource[val?.user_id]);
